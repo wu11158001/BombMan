@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Entry Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Entry
+  m_TableCollectionNameGuidString: c8628c7bad0070c4e935e66f872e74cc
+  m_Entries:
+  - m_Id: 192711168000
+    m_Key: GameName
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3418793644032
+    m_Key: Chinese
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3596158177280
+    m_Key: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4999777816576
+    m_Key: Enter nickname
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5434064441344
+    m_Key: Enter the game
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6480873756921430264
+  references:
+    version: 2
+    RefIds:
+    - rid: 6480873756921430264
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1737050946254
