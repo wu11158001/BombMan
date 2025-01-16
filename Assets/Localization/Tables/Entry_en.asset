@@ -38,6 +38,10 @@ MonoBehaviour:
     m_Localized: Enter the game
     m_Metadata:
       m_Items: []
+  - m_Id: 11698924359680
+    m_Localized: Enter a nickname (2 to 15 characters)
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

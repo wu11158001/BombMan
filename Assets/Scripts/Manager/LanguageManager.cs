@@ -15,14 +15,12 @@ public enum LocalizationTableEnum
     Entry_Table,                    // 入口
 }
 
+/*
+ * 0 = 繁體中文
+ * 1 = 英文
+ */
 public class LanguageManager : UnitySingleton<LanguageManager>
 {
-    /*
-     * 0 = 繁體中文
-     * 1 = 英文
-     */
-    private const string LOCAL_LANGUAGE_KEY = "BombMan_Language";                           // 本地語言紀錄
-
     private Dictionary<LocalizationTableEnum, StringTable> _localizationTableDic;           // 語言配置表
     public int CurrLanguage { get; private set; }                                           // 當前語言
 
@@ -55,7 +53,7 @@ public class LanguageManager : UnitySingleton<LanguageManager>
 
         Debug.Log("語言腳本準備完成。");
 
-        int localLanguage = PlayerPrefs.GetInt(LOCAL_LANGUAGE_KEY);
+        int localLanguage = PlayerPrefs.GetInt(LocalSaveKey.LOCAL_LANGUAGE_KEY);
         ChangeLanguage(localLanguage);
     }
 
@@ -105,7 +103,7 @@ public class LanguageManager : UnitySingleton<LanguageManager>
     private void SetLanguage(int index)
     {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
-        PlayerPrefs.SetInt(LOCAL_LANGUAGE_KEY, index);
+        PlayerPrefs.SetInt(LocalSaveKey.LOCAL_LANGUAGE_KEY, index);
         CurrLanguage = index;
 
         Debug.Log($"當前語言: {index}");
