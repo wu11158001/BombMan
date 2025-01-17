@@ -7,7 +7,9 @@ using System;
 // 一般介面
 public enum ViewEnum
 {
-    LobbyView,
+    LobbyView,                          // 大廳
+    CreateRoomView,                     // 創建房間
+    RoomView,                           // 房間
 }
 
 /// <summary>
@@ -123,7 +125,9 @@ public class ViewManager : UnitySingleton<ViewManager>
         }
         else
         {
-            RectTransform newView = Resources.Load<RectTransform>($"View/{viewName}");
+            GameObject newViewObj = Resources.Load<GameObject>($"View/{viewName}");
+            RectTransform newView = Instantiate(newViewObj, CanvasRt).GetComponent<RectTransform>();
+
             if (newView != null)
             {
                 CreateViewHandle(newView, callback);

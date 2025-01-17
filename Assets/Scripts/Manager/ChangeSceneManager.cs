@@ -44,8 +44,22 @@ public class ChangeSceneManager : UnitySingleton<ChangeSceneManager>
         {
             // 大廳
             case SceneEnum.Lobby:
-                ViewManager.I.OpenView<RectTransform>(ViewEnum.LobbyView);
+                ViewManager.I.OpenView<RectTransform>(ViewEnum.LobbyView, (view) =>
+                {
+                    CloseSceneLoadView();
+                });
                 break;
+        }
+    }
+
+    /// <summary>
+    /// 關閉場景載入介面
+    /// </summary>
+    public void CloseSceneLoadView()
+    {
+        if (_sceneLoadView)
+        {
+            _sceneLoadView.gameObject.SetActive(false);
         }
     }
 }

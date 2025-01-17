@@ -12,10 +12,15 @@ public class EntryView : MonoBehaviour
     private static EntryView _instance;
     public static EntryView I { get { return _instance; } }
 
+    [Header("Debug 工具")]
+    [SerializeField] GameObject DebugTool;
+    [SerializeField] bool IsUsingDebugTool;
+
+    [Space(30)]
+    [Header("設置暱稱")]
     [SerializeField] TMP_InputField SetNickname_If;
     [SerializeField] TextMeshProUGUI NicknameError_Txt;
-    [SerializeField] Button Enter_Btn;
-
+    
     [Space(30)]
     [Header("語言")]
     [SerializeField] Toggle Chinese_Tog;
@@ -25,19 +30,23 @@ public class EntryView : MonoBehaviour
     [Header("載入畫面")]
     [SerializeField] GameObject Load_Obj;
 
+    [Space(30)]
+    [Header("進入遊戲按鈕")]
+    [SerializeField] Button Enter_Btn;
+
     private Coroutine _nicknameError_Coroutine;
 
     private void Awake()
     {
         if (_instance == null) _instance = this;
+
+        DebugTool.SetActive(IsUsingDebugTool);
     }
 
     private IEnumerator Start()
     {
         Load_Obj.SetActive(true);
         yield return IProjectInit();
-
-        EventListener();
 
         Load_Obj.SetActive(false);
         NicknameError_Txt.gameObject.SetActive(false);
@@ -62,6 +71,8 @@ public class EntryView : MonoBehaviour
         string recodeNickname = PlayerPrefs.GetString(LocalSaveKey.LOCAL_NICKNAME_KEY);
         SetNickname_If.Select();
         SetNickname_If.text = recodeNickname;
+
+        EventListener();
     }
 
     private void Update()
@@ -80,11 +91,14 @@ public class EntryView : MonoBehaviour
     private IEnumerator IProjectInit()
     {
         yield return UnityServices.InitializeAsync();
+
+        AuthenticationService.Instance.SignedIn += () =>
+        {
+            Debug.Log($"登入ID:{AuthenticationService.Instance.PlayerId}");
+        };
         yield return AuthenticationService.Instance.SignInAnonymouslyAsync();
         yield return ViewManager.I.Init();
         yield return LanguageManager.I.Init();
-
-        Debug.Log($"登入ID:{AuthenticationService.Instance.PlayerId}");
     }
 
     /// <summary>
