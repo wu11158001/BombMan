@@ -9,39 +9,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: Entry_zh-TW
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Entry_Table Shared Data
   m_EditorClassIdentifier: 
-  m_LocaleId:
-    m_Code: zh-TW
-  m_SharedData: {fileID: 11400000, guid: c8628c7bad0070c4e935e66f872e74cc, type: 2}
-  m_Metadata:
-    m_Items: []
-  m_TableData:
+  m_TableCollectionName: Entry_Table
+  m_TableCollectionNameGuidString: c8628c7bad0070c4e935e66f872e74cc
+  m_Entries:
   - m_Id: 192711168000
-    m_Localized: "\u70B8\u5F48\u4EBA"
+    m_Key: GameName
     m_Metadata:
       m_Items: []
   - m_Id: 3418793644032
-    m_Localized: "\u4E2D\u6587"
+    m_Key: Chinese
     m_Metadata:
       m_Items: []
   - m_Id: 3596158177280
-    m_Localized: English
+    m_Key: English
     m_Metadata:
       m_Items: []
   - m_Id: 4999777816576
-    m_Localized: "\u8F38\u5165\u66B1\u7A31..."
+    m_Key: Enter nickname
     m_Metadata:
       m_Items: []
   - m_Id: 5434064441344
-    m_Localized: "\u9032\u5165\u904A\u6232"
+    m_Key: Enter the game
     m_Metadata:
       m_Items: []
   - m_Id: 11698924359680
-    m_Localized: "\u8F38\u5165\u66B1\u7A31(2~15\u5B57\u7B26)"
+    m_Key: Enter a nickname (2 to 15 characters)
     m_Metadata:
       m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6480873756921430264
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6480873756921430264
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1737050946254

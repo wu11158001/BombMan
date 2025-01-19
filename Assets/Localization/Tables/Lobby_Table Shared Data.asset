@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
-  m_Name: Lobby Shared Data
+  m_Name: Lobby_Table Shared Data
   m_EditorClassIdentifier: 
-  m_TableCollectionName: Lobby
+  m_TableCollectionName: Lobby_Table
   m_TableCollectionNameGuidString: 4520c83cd669ee94cba3356c122c17d7
   m_Entries:
   - m_Id: 5246750720
@@ -53,6 +53,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 374710973698048
     m_Key: Enter room name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 403905632210944
+    m_Key: Join Code
+    m_Metadata:
+      m_Items: []
+  - m_Id: 405857808093184
+    m_Key: Room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 408808463208448
+    m_Key: Must be 8 characters
     m_Metadata:
       m_Items: []
   m_Metadata:

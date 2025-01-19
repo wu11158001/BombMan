@@ -37,17 +37,14 @@ public class ChangeSceneManager : UnitySingleton<ChangeSceneManager>
         Debug.Log($"進入場景:{scene} !");
 
         ViewManager.I.ResetViewData();
-        _sceneLoadView = ViewManager.I.OpenSceneLoadView();
+        _sceneLoadView = ViewManager.I.OpenPermanentView(PermanentViewEnum.SceneLoadView);
 
         // 產生場景初始化
         switch (scene)
         {
             // 大廳
             case SceneEnum.Lobby:
-                ViewManager.I.OpenView<RectTransform>(ViewEnum.LobbyView, (view) =>
-                {
-                    CloseSceneLoadView();
-                });
+                ViewManager.I.OpenView<RectTransform>(ViewEnum.LobbyView);
                 break;
         }
     }
@@ -59,7 +56,7 @@ public class ChangeSceneManager : UnitySingleton<ChangeSceneManager>
     {
         if (_sceneLoadView)
         {
-            _sceneLoadView.gameObject.SetActive(false);
+            Destroy(_sceneLoadView.gameObject);
         }
     }
 }

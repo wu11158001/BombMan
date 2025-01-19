@@ -16,19 +16,26 @@ MonoBehaviour:
   m_GUID: 7873c72327dc2004184a9ae86fd54a85
   m_SerializeEntries:
   - m_GUID: 0007b065c4266834dab1e8490fa52fc7
-    m_Address: Entry_zh-TW
+    m_Address: Entry_Table_zh-TW
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-zh-TW
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 315b7f721929aa84198afc2e74975107
-    m_Address: Common_zh-TW
+    m_Address: Common_Table_zh-TW
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-zh-TW
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 576a0a5766789d74d83f63fc4f467df7
-    m_Address: Lobby_zh-TW
+    m_Address: Lobby_Table_zh-TW
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-TW
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d722cc4064b3b848b90073f80d0307c
+    m_Address: Room_Table_zh-TW
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-zh-TW

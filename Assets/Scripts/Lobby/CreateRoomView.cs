@@ -17,6 +17,7 @@ public class CreateRoomView : BasePopUpView
     [Header("房間密碼")]
     [SerializeField] Toggle Password_Tog;
     [SerializeField] TMP_InputField Password_If;
+    [SerializeField] TextMeshProUGUI PasswordTip_Txt;
 
     [Space(30)]
     [Header("創建房間按鈕")]
@@ -37,6 +38,7 @@ public class CreateRoomView : BasePopUpView
         // 預設房間密碼
         Password_Tog.isOn = false;
         Password_If.interactable = false;
+        PasswordTip_Txt.gameObject.SetActive(false);
 
         EventListener();
     }
@@ -46,26 +48,43 @@ public class CreateRoomView : BasePopUpView
     /// </summary>
     private void EventListener()
     {
+        // 房間人數滑條
+        RoomPlayerCount_Sli.onValueChanged.AddListener((value) =>
+        {
+            RoomPlayerCount_Txt.text = $"{RoomPlayerCount_Sli.value}";
+        });
+
         // 房間密碼Tog
         Password_Tog.onValueChanged.AddListener((isOn) =>
         {
             Password_If.interactable = isOn;
             Password_If.text = "";
+            PasswordTip_Txt.gameObject.SetActive(isOn);
+        });
+
+        // 密碼輸入框
+        Password_If.onValueChanged.AddListener((value) =>
+        {
+            PasswordTip_Txt.gameObject.SetActive(value.Length != 8);
         });
 
         // 創建房間按鈕
         Create_Btn.onClick.AddListener(() =>
         {
+            RectTransform waitingView = ViewManager.I.OpenPermanentView(PermanentViewEnum.WaitingView);
+
             string roomName = RoomName_If.text.Trim();
             int maxPlayers = (int)RoomPlayerCount_Sli.value;
+            string password = $"{Password_If.text}";
 
             if (roomName.Length == 0)
             {
                 roomName = PlayerPrefs.GetString(LocalSaveKey.LOCAL_NICKNAME_KEY);
             }
 
-            RoomManager.I.CreateRoom(roomName, maxPlayers, (joinLobby) =>
+            RoomManager.I.CreateRoom(roomName, maxPlayers, password, (joinLobby) =>
             {
+                Destroy(waitingView.gameObject);
                 ViewManager.I.CloseCurrView();
                 ViewManager.I.CloseCurrView();
                 ViewManager.I.OpenView<RectTransform>(ViewEnum.RoomView);

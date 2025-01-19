@@ -78,6 +78,7 @@ public class ObjPool
             }
 
             GameObject addObj = GameObject.Instantiate(obj, _poolDic[obj].Item1);
+            addObj.name.Replace("(Clone)", "");
             addObj.SetActive(true);
             _poolDic[obj].Item2.Add(addObj);
             return addObj.GetComponent<T>();

@@ -6,13 +6,17 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using TMPro;
 
 /// <summary>
 /// 語言配置表列表
 /// </summary>
 public enum LocalizationTableEnum
 {
+    Common_Table,                   // 共通
     Entry_Table,                    // 入口
+    Lobby_Table,                    // 大廳
+    Room_Table,                     // 房間
 }
 
 /*
@@ -21,58 +25,42 @@ public enum LocalizationTableEnum
  */
 public class LanguageManager : UnitySingleton<LanguageManager>
 {
-    private Dictionary<LocalizationTableEnum, StringTable> _localizationTableDic;           // 語言配置表
     public int CurrLanguage { get; private set; }                                           // 當前語言
-
-
-    public override void Awake()
-    {
-        base.Awake();
-    }
 
     /// <summary>
     /// 初始化
     /// </summary>
-    public IEnumerator Init()
+    public void Init()
     {
-        _localizationTableDic = new();
-
-        foreach (var tableName in Enum.GetValues(typeof(LocalizationTableEnum)))
-        {
-            var loadingOperation = LocalizationSettings.StringDatabase.GetTableAsync($"{tableName}");
-            yield return loadingOperation;
-
-            if (loadingOperation.Status != AsyncOperationStatus.Succeeded)
-            {
-                Debug.LogError($"載入語言配置表錯誤: {tableName}");
-                yield break;
-            }
-
-            _localizationTableDic.Add((LocalizationTableEnum)tableName, loadingOperation.Result);
-        }
-
-        Debug.Log("語言腳本準備完成。");
-
         int localLanguage = PlayerPrefs.GetInt(LocalSaveKey.LOCAL_LANGUAGE_KEY);
         ChangeLanguage(localLanguage);
+
+        Debug.Log("語言腳本準備完成。");
     }
 
     /// <summary>
-    /// 獲取文字內容
+    /// 設置文字
     /// </summary>
     /// <param name="table"></param>
+    /// <param name="txt"></param>
     /// <param name="key"></param>
-    /// <returns></returns>
-    public string GetString(LocalizationTableEnum table, string key)
+    public void SetText(TextMeshProUGUI txt, LocalizationTableEnum table, string key, string otherStr = "")
     {
-        if (_localizationTableDic.ContainsKey(table))
+        StartCoroutine(ISetText(txt, table, key, otherStr));
+    }
+    private IEnumerator ISetText(TextMeshProUGUI txt, LocalizationTableEnum table, string key, string otherStr = "")
+    {
+        var loadingOperation = LocalizationSettings.StringDatabase.GetTableAsync($"{table}");
+        yield return loadingOperation;
+
+        if (loadingOperation.Status == AsyncOperationStatus.Succeeded)
         {
-            return _localizationTableDic[table].GetEntry(key).GetLocalizedString();
+            var stringTable = loadingOperation.Result;
+            txt.text = $"{stringTable.GetEntry(key).GetLocalizedString()}{otherStr}";
         }
         else
         {
-            Debug.LogError($"獲取文字內容錯誤: table:{table}, key{key}");
-            return "";
+            Debug.LogError($"無法載入語言表:{table} , 錯誤:{loadingOperation.OperationException}");
         }
     }
 

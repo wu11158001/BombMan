@@ -18,6 +18,7 @@ public enum ViewEnum
 public enum PermanentViewEnum
 {
     SceneLoadView,                  // 場景轉換介面
+    WaitingView,                    // 等待介面
 }
 
 public class ViewManager : UnitySingleton<ViewManager>
@@ -52,7 +53,7 @@ public class ViewManager : UnitySingleton<ViewManager>
     /// </summary>
     private void SetCanvas()
     {
-        CanvasRt = FindAnyObjectByType<Canvas>().GetComponent<RectTransform>();
+        CanvasRt = GameObject.Find("Canvas").GetComponent<RectTransform>();
     }
 
     /// <summary>
@@ -105,7 +106,7 @@ public class ViewManager : UnitySingleton<ViewManager>
     }
 
     /// <summary>
-    /// 開啟介面
+    /// 開啟一般介面
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="viewName"></param>
@@ -131,6 +132,7 @@ public class ViewManager : UnitySingleton<ViewManager>
             if (newView != null)
             {
                 CreateViewHandle(newView, callback);
+                _viewDic.Add(viewName, newView);
                 _openedView.Push(newView);
             }
             else
@@ -141,17 +143,18 @@ public class ViewManager : UnitySingleton<ViewManager>
     }
 
     /// <summary>
-    /// 開啟場景轉換介面
+    /// 開啟常駐介面
     /// </summary>
+    /// <param name="permanentView"></param>
     /// <returns></returns>
-    public RectTransform OpenSceneLoadView()
+    public RectTransform OpenPermanentView(PermanentViewEnum permanentView)
     {
         if (CanvasRt == null)
         {
             SetCanvas();
         }
 
-        RectTransform sceneLoadView = _permanentView[PermanentViewEnum.SceneLoadView];
+        RectTransform sceneLoadView = _permanentView[permanentView];
         RectTransform view = Instantiate(sceneLoadView, CanvasRt).GetComponent<RectTransform>();
         CreateViewHandle<RectTransform>(view);
 

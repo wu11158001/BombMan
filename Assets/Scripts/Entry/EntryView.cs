@@ -90,6 +90,8 @@ public class EntryView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IProjectInit()
     {
+        LanguageManager.I.Init();
+
         yield return UnityServices.InitializeAsync();
 
         AuthenticationService.Instance.SignedIn += () =>
@@ -97,8 +99,8 @@ public class EntryView : MonoBehaviour
             Debug.Log($"登入ID:{AuthenticationService.Instance.PlayerId}");
         };
         yield return AuthenticationService.Instance.SignInAnonymouslyAsync();
+
         yield return ViewManager.I.Init();
-        yield return LanguageManager.I.Init();
     }
 
     /// <summary>
