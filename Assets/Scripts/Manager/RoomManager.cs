@@ -167,10 +167,7 @@ public class RoomManager : UnitySingleton<RoomManager>
             {
                 CancelInvoke(nameof(HandleLobbyHeartbeat));
                 await LobbyService.Instance.RemovePlayerAsync(JoinLobby.Id, AuthenticationService.Instance.PlayerId);
-                JoinLobby = null;
-
-                RoomRpcManager.I.RemoveRoomPlayerServerRpc(NetworkManager.Singleton.LocalClientId);
-                NetworkManager.Singleton.Shutdown();
+                JoinLobby = null; 
             }
         }
         catch (LobbyServiceException e)

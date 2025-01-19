@@ -31,10 +31,16 @@ public class RoomPlayerListItem : MonoBehaviour
     /// <param name="roomPlayerData"></param>
     public void SetRoomPlayerListItem(RoomPlayerData roomPlayerData)
     {
+        bool isLocalHost = NetworkManager.Singleton.IsHost;
         bool isRoomHost = roomPlayerData.IsRoomHost;
         bool isLocalItem = roomPlayerData.NetworkClientId == NetworkManager.Singleton.LocalClientId;
         
-        Kick_Btn.gameObject.SetActive(isRoomHost && !isLocalItem);
+        Kick_Btn.gameObject.SetActive(isLocalHost && !isRoomHost && !isLocalItem);
+        Kick_Btn.onClick.RemoveAllListeners();
+        Kick_Btn.onClick.AddListener(() =>
+        {
+            RoomRpcManager.I.KickRoomPlayerServerRpc(roomPlayerData.NetworkClientId);
+        });
 
         PlayerName_Txt.text = $"{roomPlayerData.Nickname}";
 

@@ -12,6 +12,8 @@ public class RoomView : MonoBehaviour
     [SerializeField] TextMeshProUGUI RoomName_Txt;
     [SerializeField] TextMeshProUGUI RoomJoinCode_TxtHyperLink;
     [SerializeField] Button Leave_Btn;
+    [SerializeField] Button PrepareOrStart_Btn;
+    [SerializeField] TextMeshProUGUI PrepareOrStartBtn_Txt;
 
     [Space(30)]
     [Header("玩家列表")]
@@ -19,6 +21,8 @@ public class RoomView : MonoBehaviour
     [SerializeField] GameObject RoomPlayerListSample;
 
     private List<RoomPlayerListItem> _roomPlayerListItemList;                       // 房間玩家列表
+
+    private RectTransform _waitingView;
 
     private void Start()
     {
@@ -37,9 +41,13 @@ public class RoomView : MonoBehaviour
 
     private void OnEnable()
     {
+        _waitingView = ViewManager.I.OpenPermanentView(PermanentViewEnum.WaitingView);
+
         LanguageManager.I.SetText(RoomName_Txt, LocalizationTableEnum.Lobby_Table, "Room", $": {RoomManager.I.JoinLobby.Name}");
         LanguageManager.I.SetText(RoomJoinCode_TxtHyperLink, LocalizationTableEnum.Lobby_Table, "Join Code",
             $": <link={RoomManager.I.JoinLobby.Id}>{RoomManager.I.JoinLobby.Id}</link>");
+
+        UpdateRoomView();
     }
 
     /// <summary>
@@ -56,11 +64,39 @@ public class RoomView : MonoBehaviour
 
         // 離開按鈕
         Leave_Btn.onClick.AddListener(() =>
-        {
-            RoomManager.I.LeaveLobby();
-            ViewManager.I.CloseCurrView();
-            ViewManager.I.OpenView<RectTransform>(ViewEnum.LobbyView);
+        {            
+            CloseRoomView();           
         });
+
+        // 準備/開始按鈕
+        PrepareOrStart_Btn.onClick.AddListener(() =>
+        {
+            if (NetworkManager.Singleton.IsConnectedClient)
+            {
+                if (NetworkManager.Singleton.IsHost)
+                {
+                    /*是Host*/
+                }
+                else
+                {
+                    /*一般玩家*/
+                    RoomPlayerData roomPlayerData = RoomRpcManager.I.GetLocalRoomPlayerData(NetworkManager.Singleton.LocalClientId);
+                    roomPlayerData.IsPrepare = !roomPlayerData.IsPrepare;
+                    RoomRpcManager.I.UpdateRoomPlayerServerRpc(NetworkManager.Singleton.LocalClientId, roomPlayerData);
+                }
+            }
+        });
+    }
+
+    /// <summary>
+    /// 關閉房間
+    /// </summary>
+    public void CloseRoomView()
+    {
+        RoomManager.I.LeaveLobby();
+        NetworkManager.Singleton.Shutdown();
+        ViewManager.I.CloseCurrView();
+        ViewManager.I.OpenView<RectTransform>(ViewEnum.LobbyView);
     }
 
     /// <summary>
@@ -68,6 +104,13 @@ public class RoomView : MonoBehaviour
     /// </summary>
     public void UpdateRoomView()
     {
+        if (RoomRpcManager.I.RoomPlayerDataList == null ||
+            RoomRpcManager.I.RoomPlayerDataList.Count == 0 ||
+            _roomPlayerListItemList == null)
+        {
+            return;
+        }
+
         for (int i = 0; i < _roomPlayerListItemList.Count; i++)
         {
             bool isLock = i >= RoomManager.I.JoinLobby.MaxPlayers;
@@ -78,6 +121,21 @@ public class RoomView : MonoBehaviour
         foreach (var roomPlayerData in RoomRpcManager.I.RoomPlayerDataList)
         {
             _roomPlayerListItemList[index++].SetRoomPlayerListItem(roomPlayerData);
+        }
+
+        if (NetworkManager.Singleton.IsConnectedClient)
+        {
+            string keyStr =
+                NetworkManager.Singleton.IsHost ?
+                "Start" :
+                "Prepare";
+            LanguageManager.I.SetText(PrepareOrStartBtn_Txt, LocalizationTableEnum.Room_Table, keyStr);
+        }
+
+        if (_waitingView != null)
+        {
+            Destroy(_waitingView.gameObject);
+            _waitingView = null;
         }
     }
 }

@@ -662,6 +662,8 @@ MonoBehaviour:
   RoomName_Txt: {fileID: 4360059691347810038}
   RoomJoinCode_TxtHyperLink: {fileID: 5750897470462054824}
   Leave_Btn: {fileID: 6330462515801619250}
+  PrepareOrStart_Btn: {fileID: 96751875342951408}
+  PrepareOrStartBtn_Txt: {fileID: 1555512761068966318}
   RoomPlayerListNode: {fileID: 1999664546464415680}
   RoomPlayerListSample: {fileID: 4490902427016635660}
 --- !u!1 &3783919684745134156
@@ -1230,7 +1232,7 @@ GameObject:
   - component: {fileID: 1555512761068966318}
   - component: {fileID: 3599465613194695654}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: PrepareOrStartBtn_Txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
